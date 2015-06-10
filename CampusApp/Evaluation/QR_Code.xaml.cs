@@ -1,10 +1,13 @@
 ﻿using Lumia.Imaging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Runtime.Serialization.Json;
+using System.Text;
 using System.Threading.Tasks;
 using VideoEffects;
 using Windows.Devices.Enumeration;
@@ -26,6 +29,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
+using Windows.Web.Http;
 using ZXing;
 using ZXing.Common;
 
@@ -168,12 +172,20 @@ namespace CampusApp.Evaluation
         
         void AnalyzeBitmap(Bitmap bitmap, TimeSpan time)
         {
-            Result result = reader.Decode(
-                bitmap.Buffers[0].Buffer.ToArray(),
-                (int)bitmap.Buffers[0].Pitch,
-                (int)bitmap.Dimensions.Height,
-                BitmapFormat.Gray8
-                );
+            Result result = null;
+            try
+            {
+                result = reader.Decode(
+                    bitmap.Buffers[0].Buffer.ToArray(),
+                    (int)bitmap.Buffers[0].Pitch,
+                    (int)bitmap.Dimensions.Height,
+                    BitmapFormat.Gray8
+                    );
+            }
+            catch
+            {
+                mDialog("Fehler beim Einlesen des QR-Codes");
+            }
 
             if (result != null)
             {
@@ -182,14 +194,83 @@ namespace CampusApp.Evaluation
                     DispatcherTimerOff();
                     removeEffects();
 
+                    // show frame, progress ring and text
+                    this.waitFrame.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                    this.waitText.Visibility = Windows.UI.Xaml.Visibility.Visible;
+                    this.waitRing.IsActive = true;
+
                     // check http url                  
                     if (Uri.IsWellFormedUriString(result.Text, UriKind.RelativeOrAbsolute))
-                        mDialog(result.Text);
+                    {
+
+                        readJSON(result.Text);
+                        //mDialog(result.Text);
+                    }
                     else
                         mDialog("Falscher QR-Code!" + Environment.NewLine + "Weiter scannen?");
 
                 });
             }
+        }
+
+        private async void readJSON(string aURL)
+        {
+            string jsonString = await getQuestions(aURL);
+
+            if (jsonString.Equals(""))
+                mDialog("Keine Daten vom Server bekommen!");
+            else
+            {
+                DTO.QuestionsDTO obj = JsonConvert.DeserializeObject<DTO.QuestionsDTO>(jsonString);
+                if (obj == null)
+                    mDialog("Falsche Daten eingelesen!");
+                else
+                    mDialog(obj.ToString());
+                //Frame.Navigate(typeof(newPage), obj);
+                /*
+                 * private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
+	                {
+                        Employee emp = e.NavigationParameter as Employee;
+                         if(emp!=null)
+                         {
+                            txtName.Text = emp.Name;
+                            txtID.Text = emp.ID.ToString();
+                         }
+                    }
+                 /*/
+            }
+
+        }
+
+        private async Task<string> getQuestions(string aUrl)
+        {
+            var uri = new Uri(aUrl);
+            var httpClient = new HttpClient();
+            string result = ""; 
+                     
+
+            // Always catch network exceptions for async methods
+            try
+            {
+                var response = await httpClient.GetAsync(uri);
+
+                var statusCode = response.StatusCode;
+
+                if ((statusCode == HttpStatusCode.Ok) || (statusCode == HttpStatusCode.Accepted))            
+                    result = await response.Content.ReadAsStringAsync(); 
+
+
+            }
+            catch
+            {
+                // Details in ex.Message and ex.HResult.       
+            }
+
+            // Once your app is done using the HttpClient object call dispose to 
+            // free up system resources (the underlying socket and memory used for the object)
+            httpClient.Dispose();
+
+            return result;
         }
 
         async private void setEffects()
@@ -283,9 +364,10 @@ namespace CampusApp.Evaluation
                     DispatcherTimerOn();
                     setEffects();
 
-                    // ändern
-
-                    //testtt();
+                    // show frame, progress ring and text
+                    this.waitFrame.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                    this.waitText.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+                    this.waitRing.IsActive = false;
 
                     break;
                 //Quit Button.

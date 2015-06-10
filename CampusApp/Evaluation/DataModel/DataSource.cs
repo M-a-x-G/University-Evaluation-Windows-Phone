@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI;
+using Windows.UI.Xaml.Media;
 
 namespace CampusApp.Evaluation.DataModel
 {
@@ -26,6 +28,13 @@ namespace CampusApp.Evaluation.DataModel
 
         private Boolean _isBigAnswer;
 
+        private Brush _answer1Color;
+        private Brush _answer2Color;
+        private Brush _answer3Color;
+        private Brush _answer4Color;
+        private Brush _answer5Color;
+        private Brush _answer6Color;
+
         public DataSource(String aQuestion)
             : this(aQuestion, "", "", "", "", "", "")
         {
@@ -35,7 +44,7 @@ namespace CampusApp.Evaluation.DataModel
         }
 
         public DataSource (String aQuestion, String aAnswer1, String aAnswer2, String aAnswer3, String aAnswer4, String aAnswer5, String aAnswer6)
-        {
+        {          
             this._question = aQuestion;
             this._answer1 = aAnswer1;
             this._answer2 = aAnswer2;
@@ -45,13 +54,25 @@ namespace CampusApp.Evaluation.DataModel
             this._answer6 = aAnswer6;
             this._isBigAnswer = false;
 
+            Answer1Color = new SolidColorBrush(Colors.Gray);
+            Answer2Color = new SolidColorBrush(Colors.Gray);
+            Answer3Color = new SolidColorBrush(Colors.Gray);
+            Answer4Color = new SolidColorBrush(Colors.Gray);
+            Answer5Color = new SolidColorBrush(Colors.Gray);
+            Answer6Color = new SolidColorBrush(Colors.Gray);
+
+           
+
         }
 
 
         public string Question
         {
             get { return this._question; }
-            set { this.SetProperty(ref this._question, value); }
+            set 
+            { 
+                this.SetProperty(ref this._question, value); 
+            }
         }
 
         public string Answer1
@@ -198,9 +219,132 @@ namespace CampusApp.Evaluation.DataModel
             }
         }
 
+        public Brush Answer1Color
+        {
+            get { return this._answer1Color; }
+            set
+            {
+                this.SetProperty(ref this._answer1Color, value);
+                
+            }
+        }
+
+        public Brush Answer2Color
+        {
+            get { return this._answer2Color; }
+            set
+            {
+                this.SetProperty(ref this._answer2Color, value);
+
+            }
+        }
+
+        public Brush Answer3Color
+        {
+            get { return this._answer3Color; }
+            set
+            {
+                this.SetProperty(ref this._answer3Color, value);
+
+            }
+        }
+
+        public Brush Answer4Color
+        {
+            get { return this._answer4Color; }
+            set
+            {
+                this.SetProperty(ref this._answer4Color, value);
+
+            }
+        }
+
+        public Brush Answer5Color
+        {
+            get { return this._answer5Color; }
+            set
+            {
+                this.SetProperty(ref this._answer5Color, value);
+
+            }
+        }
+
+        public Brush Answer6Color
+        {
+            get { return this._answer6Color; }
+            set
+            {
+                this.SetProperty(ref this._answer6Color, value);
+
+            }
+        }
+
         public bool IsBigAnswer
         {
             get {  return this._isBigAnswer; }
+        }
+      
+
+        public void setButtonAnswer(int id)
+        {
+            switch (id)
+            {
+                case 1:
+                    Answer1State = true;
+                    Answer1Color = new SolidColorBrush(Color.FromArgb(255, 204, 10, 47));
+                    Answer2Color = new SolidColorBrush(Colors.Gray);
+                    Answer3Color = new SolidColorBrush(Colors.Gray);
+                    Answer4Color = new SolidColorBrush(Colors.Gray);
+                    Answer5Color = new SolidColorBrush(Colors.Gray);
+                    Answer6Color = new SolidColorBrush(Colors.Gray);
+                    break;
+                case 2:
+                    Answer2State = true;
+                    Answer1Color = new SolidColorBrush(Colors.Gray);
+                    Answer2Color = new SolidColorBrush(Color.FromArgb(255, 204, 10, 47));
+                    Answer3Color = new SolidColorBrush(Colors.Gray);
+                    Answer4Color = new SolidColorBrush(Colors.Gray);
+                    Answer5Color = new SolidColorBrush(Colors.Gray);
+                    Answer6Color = new SolidColorBrush(Colors.Gray);
+                    break;
+                case 3:
+                    Answer3State = true;
+                    Answer1Color = new SolidColorBrush(Colors.Gray);
+                    Answer2Color = new SolidColorBrush(Colors.Gray);
+                    Answer3Color = new SolidColorBrush(Color.FromArgb(255, 204, 10, 47));
+                    Answer4Color = new SolidColorBrush(Colors.Gray);
+                    Answer5Color = new SolidColorBrush(Colors.Gray);
+                    Answer6Color = new SolidColorBrush(Colors.Gray);
+                    break;
+                case 4:
+                    Answer4State = true;
+                    Answer1Color = new SolidColorBrush(Colors.Gray);
+                    Answer2Color = new SolidColorBrush(Colors.Gray);
+                    Answer3Color = new SolidColorBrush(Colors.Gray);
+                    Answer4Color = new SolidColorBrush(Color.FromArgb(255, 204, 10, 47));
+                    Answer5Color = new SolidColorBrush(Colors.Gray);
+                    Answer6Color = new SolidColorBrush(Colors.Gray);
+                    break;
+                case 5:
+                    Answer5State = true;
+                    Answer1Color = new SolidColorBrush(Colors.Gray);
+                    Answer2Color = new SolidColorBrush(Colors.Gray);
+                    Answer3Color = new SolidColorBrush(Colors.Gray);
+                    Answer4Color = new SolidColorBrush(Colors.Gray);
+                    Answer5Color = new SolidColorBrush(Color.FromArgb(255, 204, 10, 47));
+                    Answer6Color = new SolidColorBrush(Colors.Gray);
+                    break;
+                case 6:
+                    Answer6State = true;
+                    Answer1Color = new SolidColorBrush(Colors.Gray);
+                    Answer2Color = new SolidColorBrush(Colors.Gray);
+                    Answer3Color = new SolidColorBrush(Colors.Gray);
+                    Answer4Color = new SolidColorBrush(Colors.Gray);
+                    Answer5Color = new SolidColorBrush(Colors.Gray);
+                    Answer6Color = new SolidColorBrush(Color.FromArgb(255, 204, 10, 47));
+                    break;
+
+            }
         }
     }
 }

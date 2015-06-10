@@ -96,10 +96,14 @@
     </Compile>
     <Compile Include="Evaluation\DataModel\BindableBase.cs" />
     <Compile Include="Evaluation\DataModel\DataSource.cs" />
-    <Compile Include="Evaluation\DataModel\Questions.cs" />
+    <Compile Include="Evaluation\DTO\AnswersDTO .cs" />
+    <Compile Include="Evaluation\DTO\QuestionsDTO.cs" />
+    <Compile Include="Evaluation\DTO\RequestDTO .cs" />
+    <Compile Include="Evaluation\DTO\ResponseDTO .cs" />
     <Compile Include="Evaluation\Evaluation.xaml.cs">
       <DependentUpon>Evaluation.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Evaluation\Helper\Functions.cs" />
     <Compile Include="Evaluation\QR_Code.xaml.cs">
       <DependentUpon>QR_Code.xaml</DependentUpon>
     </Compile>
@@ -183,6 +187,10 @@
   <ItemGroup>
     <Reference Include="Microsoft.Graphics.Canvas, Version=255.255.255.255, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Win2D.0.0.16\lib\wpa\Microsoft.Graphics.Canvas.winmd</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="VideoEffectExtensions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">

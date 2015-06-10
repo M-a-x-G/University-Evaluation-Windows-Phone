@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CampusApp.Evaluation.DataModel
+namespace CampusApp.Evaluation.DTO
 {
     public struct Choices
     {
@@ -14,10 +14,16 @@ namespace CampusApp.Evaluation.DataModel
     }
     
     [DataContract]
-    class Questions
+    class QuestionsDTO
     {
         [DataMember]
-        internal string token;
+        internal string voteToken;
+
+        [DataMember]
+        internal string evaluationUID;
+
+        [DataMember]
+        internal string[] innerSections;
 
         [DataMember]
         internal string[] textQuestions;

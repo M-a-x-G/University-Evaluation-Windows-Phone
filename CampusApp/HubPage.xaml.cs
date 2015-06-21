@@ -154,12 +154,12 @@ namespace CampusApp
 
         private void btnMensaplan_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(Evaluation.voting));
+            
         }
 
         private void btnInfo_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(Evaluation.BlankPage1));
+            
         }
     }
 }

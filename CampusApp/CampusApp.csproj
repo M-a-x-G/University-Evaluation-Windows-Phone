@@ -91,8 +91,11 @@
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
     <Compile Include="DataModel\SampleDataSource.cs" />
-    <Compile Include="Evaluation\BlankPage1.xaml.cs">
-      <DependentUpon>BlankPage1.xaml</DependentUpon>
+    <Compile Include="Evaluation\Evaluation.xaml.cs">
+      <DependentUpon>Evaluation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Evaluation\Course.xaml.cs">
+      <DependentUpon>Course.xaml</DependentUpon>
     </Compile>
     <Compile Include="Evaluation\DataModel\BindableBase.cs" />
     <Compile Include="Evaluation\DataModel\DataSource.cs" />
@@ -100,9 +103,6 @@
     <Compile Include="Evaluation\DTO\QuestionsDTO.cs" />
     <Compile Include="Evaluation\DTO\RequestDTO .cs" />
     <Compile Include="Evaluation\DTO\ResponseDTO .cs" />
-    <Compile Include="Evaluation\Evaluation.xaml.cs">
-      <DependentUpon>Evaluation.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Evaluation\Helper\Functions.cs" />
     <Compile Include="Evaluation\QR_Code.xaml.cs">
       <DependentUpon>QR_Code.xaml</DependentUpon>
@@ -152,11 +152,11 @@
     <PRIResource Include="Strings\de-DE\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Evaluation\BlankPage1.xaml">
+    <Page Include="Evaluation\Evaluation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Evaluation\Evaluation.xaml">
+    <Page Include="Evaluation\Course.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

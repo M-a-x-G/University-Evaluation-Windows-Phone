@@ -203,8 +203,13 @@ namespace CampusApp.Evaluation
                     if (Uri.IsWellFormedUriString(result.Text, UriKind.RelativeOrAbsolute))
                     {
 
-                        readJSON(result.Text);
-                        //mDialog(result.Text);
+                        // get param from url
+                        var parsedQueryString = Helper.Functions.ParseQueryString(new Uri(result.Text));
+                        if (parsedQueryString.ContainsKey("uid"))
+                        {                                                     
+                            getQuestions(result.Text);                       
+                        }
+                                           
                     }
                     else
                         mDialog("Falscher QR-Code!" + Environment.NewLine + "Weiter scannen?");
@@ -213,65 +218,39 @@ namespace CampusApp.Evaluation
             }
         }
 
-        private async void readJSON(string aURL)
+        private async void getQuestions(string aURL)
         {
-            string jsonString = await getQuestions(aURL);
+            // step 1
+            // Request
+            DTO.RequestDTO rDTO = new DTO.RequestDTO();
+            rDTO.deviceID = Helper.Functions.GetDeviceID();
+            string requestDTOJSON = JsonConvert.SerializeObject(rDTO);
+            string jsonString = await Helper.Functions.sendDataToServer(aURL, requestDTOJSON);
 
             if (jsonString.Equals(""))
-                mDialog("Keine Daten vom Server bekommen!");
+                mDialog("Keine Daten vom Server erhalten!");
+            // step 2
+            // questions
             else
-            {
-                DTO.QuestionsDTO obj = JsonConvert.DeserializeObject<DTO.QuestionsDTO>(jsonString);
-                if (obj == null)
+            {            
+                DTO.QuestionsDTO qDTO = JsonConvert.DeserializeObject<DTO.QuestionsDTO>(jsonString);
+                if (qDTO == null)
                     mDialog("Falsche Daten eingelesen!");
+                // step 3
+                // navigate to the next page
                 else
-                    mDialog(obj.ToString());
-                //Frame.Navigate(typeof(newPage), obj);
-                /*
-                 * private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
-	                {
-                        Employee emp = e.NavigationParameter as Employee;
-                         if(emp!=null)
-                         {
-                            txtName.Text = emp.Name;
-                            txtID.Text = emp.ID.ToString();
-                         }
-                    }
-                 /*/
+                {
+                    Helper.Functions.sendDataTOCourse obj;
+                    obj.qDTO = qDTO;
+                    obj.url = Helper.Functions.cutURLBeforEndpoint(aURL, "questions");
+                    Frame.Navigate(typeof(Course), obj);
+                }
+                                     
             }
 
         }
 
-        private async Task<string> getQuestions(string aUrl)
-        {
-            var uri = new Uri(aUrl);
-            var httpClient = new HttpClient();
-            string result = ""; 
-                     
-
-            // Always catch network exceptions for async methods
-            try
-            {
-                var response = await httpClient.GetAsync(uri);
-
-                var statusCode = response.StatusCode;
-
-                if ((statusCode == HttpStatusCode.Ok) || (statusCode == HttpStatusCode.Accepted))            
-                    result = await response.Content.ReadAsStringAsync(); 
-
-
-            }
-            catch
-            {
-                // Details in ex.Message and ex.HResult.       
-            }
-
-            // Once your app is done using the HttpClient object call dispose to 
-            // free up system resources (the underlying socket and memory used for the object)
-            httpClient.Dispose();
-
-            return result;
-        }
+        
 
         async private void setEffects()
         {

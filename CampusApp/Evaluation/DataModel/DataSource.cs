@@ -35,15 +35,20 @@ namespace CampusApp.Evaluation.DataModel
         private Brush _answer5Color;
         private Brush _answer6Color;
 
-        public DataSource(String aQuestion)
-            : this(aQuestion, "", "", "", "", "", "")
+        private String _evaluationUID;
+        private String _voteToken;
+        private String _course;
+        private String _url;
+
+        public DataSource(String aQuestion, String aEvaluationUID, String aVoteToken, String aCourse, String aURL)
+            : this(aQuestion, "", "", "", "", "", "", aEvaluationUID, aVoteToken, aCourse, aURL)
         {
             this._bigAnswer = "";
             this._isBigAnswer = true;
 
         }
 
-        public DataSource (String aQuestion, String aAnswer1, String aAnswer2, String aAnswer3, String aAnswer4, String aAnswer5, String aAnswer6)
+        public DataSource(String aQuestion, String aAnswer1, String aAnswer2, String aAnswer3, String aAnswer4, String aAnswer5, String aAnswer6, String aEvaluationUID, String aVoteToken, String aCourse, String aURL)
         {          
             this._question = aQuestion;
             this._answer1 = aAnswer1;
@@ -61,10 +66,38 @@ namespace CampusApp.Evaluation.DataModel
             Answer5Color = new SolidColorBrush(Colors.Gray);
             Answer6Color = new SolidColorBrush(Colors.Gray);
 
+            this._evaluationUID = aEvaluationUID;
+            this._voteToken = aVoteToken;
+            this._course = aCourse;
+            this._url = aURL;
            
 
         }
 
+
+        public string URL
+        {
+            get { return this._url; }
+            set { this._url = value; }
+        }
+
+        public string EvaluationUID
+        {
+            get { return this._evaluationUID; }
+            set { this._evaluationUID = value; }         
+        }
+        
+        public string VoteToken
+        {
+            get { return this._voteToken; }
+            set { this._voteToken = value; }         
+        }
+
+        public string Course
+        {
+            get { return this._course; }
+            set { this._course = value; }         
+        }
 
         public string Question
         {

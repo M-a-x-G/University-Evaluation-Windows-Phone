@@ -1,0 +1,39 @@
+﻿<Page
+    x:Class="CampusAppEvalWP.Course"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CampusAppEvalWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.BottomAppBar>
+        <CommandBar x:Name="cbar" Background="#CC0A2F" Foreground="White">
+        </CommandBar>
+    </Page.BottomAppBar>
+
+    <Grid x:Name="LayoutRoot" Background="White">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="Wählen Sie Ihren Studiengang" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="25" Margin="0,30,0,0" Foreground="Black"/>
+
+            <ScrollViewer Grid.Row="1">
+                <StackPanel x:Name="spButtons">
+<!--
+                    <Button Foreground="Black" Background="{x:Null}" HorizontalAlignment="Stretch" BorderBrush="{x:Null}">
+                        <TextBlock Text="Test" FontWeight="Normal" FontSize="20"/>
+                    </Button>
+-->
+                </StackPanel>
+
+            </ScrollViewer>
+
+
+
+        </Grid>
+    </Grid>
+</Page>

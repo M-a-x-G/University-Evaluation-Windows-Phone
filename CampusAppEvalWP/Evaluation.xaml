@@ -7,16 +7,15 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    
     <Page.BottomAppBar>
         <CommandBar x:Name="cbar" Background="#CC0A2F" Foreground="White">
             <AppBarButton x:Name="abbAccept" Icon="Send" Label="Senden" GotFocus="AppBarButton_GotFocus" Click="abbAccept_Click"/>
-            <CommandBar.SecondaryCommands>              
-                      
+            <CommandBar.SecondaryCommands>
+
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
-
-
 
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Pivot x:Name="pQuestions" Title="" Background="White" Margin="0,27,0,0" SelectionChanged="pQuestions_SelectionChanged" PointerEntered="pQuestions_PointerEntered">
@@ -27,8 +26,8 @@
                     </Grid>
                 </DataTemplate>
             </Pivot.HeaderTemplate>
+
             <!--
-             
             <PivotItem Header="Frage 1 - 22">
 
                 <Grid Margin="0,0,0,0">
@@ -43,7 +42,7 @@
 
                     </ScrollViewer>
 
-               <StackPanel Grid.Row="1" VerticalAlignment ="Bottom" HorizontalAlignment="Stretch" Background="Black" Margin="0,0,0,0">
+                    <StackPanel Grid.Row="1" VerticalAlignment ="Bottom" HorizontalAlignment="Stretch" Margin="0,0,0,0">
                         <Grid Grid.Row="1" Margin="0,0,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -51,7 +50,7 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <Button Grid.Column="0" Width="145" Height="87" Background="#FF898686"/>
+                            <Button IsEnabled="true" Grid.Column="0" Width="145" Height="87" Background="#FF959393" BorderBrush="Black" Foreground="#FF111111" />
                             <Button Grid.Column="2" Width="145" Height="87"/>
                         </Grid>
 
@@ -82,7 +81,7 @@
 
 
 
-                  
+
 
 
 
@@ -91,29 +90,29 @@
 
 
 
-              
-                
+
+
 
             </PivotItem>
 
-            
-          
+
+             
             
             <PivotItem Header="Frage 2 - 22" GotFocus="PivotItem_GotFocus">
-                <Button Foreground="Black" BorderBrush="White" Background="White">
+                <Button Foreground="Black" BorderBrush="White" Background="#FFD8AFAF">
                         <TextBlock Text="Test"/>
                 </Button>
             </PivotItem>
-             
-            <PivotItem Header="Frage 3 - 22" GotFocus="PivotItem_GotFocus">
+            
+            <PivotItem Header="Frage 3 - 22" >
                 <Grid Margin="0,0,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="200"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <TextBox Grid.Row="1" VerticalAlignment="Stretch" Margin="0,0,0,0" LostFocus="TextBox_LostFocus" Background="#3F000000" Text="text" BorderBrush="Black" />
-
+                    <TextBox PlaceholderText="Hallo" Grid.Row="1" VerticalAlignment="Stretch" Margin="0,0,0,0" LostFocus="TextBox_LostFocus" Background="#3F000000" Text="" BorderBrush="Black" />
+                    
                 </Grid>
 
                 
@@ -121,7 +120,7 @@
 
             </PivotItem>
             
-         -->
+          -->
 
         </Pivot>
 

@@ -32,10 +32,11 @@
             <Slider x:Name="sliderZoom"
                 Width="250"
                 ValueChanged="sliderZoom_ValueChanged" VerticalAlignment="Bottom"
-                Grid.Row="1"
+                Grid.Row="1" 
+                Visibility="Collapsed"
                  />
 
-            <TextBlock Grid.Row="1" Text="- Zoom +" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="25" Margin="0,0,0,40"/>
+            <TextBlock Grid.Row="1" Text="- Zoom +" VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="25" Margin="0,0,0,40" Visibility="Collapsed"/>
 
         </Grid>
 

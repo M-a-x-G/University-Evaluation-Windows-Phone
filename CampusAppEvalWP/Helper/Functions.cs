@@ -70,7 +70,7 @@ namespace CampusAppEvalWP.Helper
             return result;
         }
 
-        public static async Task<string> sendDataToServer(string aUrl, string aEndPoint, string aJson, bool aWithJson)
+        public static async Task<string> sendDataToServer(string aUrl, string aEndPoint, string aJson)
         {
             string result = "";
             var httpClient = new HttpClient();
@@ -80,12 +80,9 @@ namespace CampusAppEvalWP.Helper
             {
 
                 httpClient = new Windows.Web.Http.HttpClient();
-                Windows.Web.Http.HttpRequestMessage msg = new Windows.Web.Http.HttpRequestMessage(new Windows.Web.Http.HttpMethod("POST"), new Uri(aUrl + aEndPoint));
-                if (aWithJson)
-                {
-                    msg.Content = new HttpStringContent((aJson));
-                    msg.Content.Headers.ContentType = new HttpMediaTypeHeaderValue("application/json");
-                }
+                Windows.Web.Http.HttpRequestMessage msg = new Windows.Web.Http.HttpRequestMessage(new Windows.Web.Http.HttpMethod("POST"), new Uri(aUrl + aEndPoint));             
+                msg.Content = new HttpStringContent((aJson));
+                msg.Content.Headers.ContentType = new HttpMediaTypeHeaderValue("application/json");
 
                 var response = await httpClient.SendRequestAsync(msg).AsTask();
               

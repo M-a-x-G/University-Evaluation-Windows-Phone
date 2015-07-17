@@ -4,4 +4,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:CampusAppEvalWP">
 
+    <Application.Resources>
+        <ResourceDictionary>
+            <SolidColorBrush x:Key="ButtonPressedBackgroundThemeBrush" Color="Red"/>
+            <SolidColorBrush x:Key="ButtonDisabledBackgroundThemeBrush" Color="Gray" />
+            <SolidColorBrush x:Key="ButtonDisabledBorderThemeBrush" Color="Gray" />
+        </ResourceDictionary>
+    </Application.Resources>
+    
 </Application>
+    
+    

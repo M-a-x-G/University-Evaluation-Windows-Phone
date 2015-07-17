@@ -67,6 +67,7 @@ namespace CampusAppEvalWP
         int maxItems;
         int lastPage;
         int counterPage;
+        int buttonWidth;
 
         public Evaluation()
         {
@@ -83,7 +84,28 @@ namespace CampusAppEvalWP
 
             lastPage = -1;
             counterPage = 1;
-         
+
+            buttonWidth = (int)Window.Current.Bounds.Width / 2 - 28;
+
+            /*
+            //Testdaten
+            DataModel.DataSource dd = new DataModel.DataSource("Hallo, Frage 1", "test");
+            dsl.Add(dd);
+            dd = new DataModel.DataSource("Hallo, Frage 2", "Antwort1", "Antwort2", "Antwort3", "Antwort4", "Antwort5", "Antwort6", "test");
+            dsl.Add(dd);
+            dd = new DataModel.DataSource("Hallo, Frage 3", "test");
+            dsl.Add(dd);
+            dd = new DataModel.DataSource("Hallo, Frage 4", "test");
+            dsl.Add(dd);
+            dd = new DataModel.DataSource("Hallo, Frage 5", "Antwort1", "Antwort2", "Antwort3", "Antwort4", "Antwort5", "", "test");
+            dsl.Add(dd);
+            dd = new DataModel.DataSource("Hallo, Frage 6", "Antwort1", "Antwort2", "Antwort3", "Antwort4", "", "", "test");
+            dsl.Add(dd);
+            dd = new DataModel.DataSource("Hallo, Frage 7", "Antwort1", "Antwort2", "Antwort3", "Antwort4", "Antwort5", "Antwort6", "test");
+            dsl.Add(dd);
+            dd = new DataModel.DataSource("Hallo, Frage 8", "Antwort1", "Antwort2", "Antwort3", "Antwort4", "Antwort5", "Antwort6", "test");
+            dsl.Add(dd);
+             * */
                                         
         }
       
@@ -149,7 +171,7 @@ namespace CampusAppEvalWP
             grid2.Margin = new Thickness(0, 0, 0, 0);
 
             bt1 = new Button();
-            bt1.Width = 165;
+            bt1.Width = buttonWidth; // 165;
             bt1.Height = 95;          
             bt1.Click += Button_Click;
             bt1.Foreground = new SolidColorBrush(Colors.Black);
@@ -175,7 +197,7 @@ namespace CampusAppEvalWP
             grid2.Children.Add(bt1);
 
             bt2 = new Button();
-            bt2.Width = 175;
+            bt2.Width = buttonWidth + 5; // 175;
             bt2.Height = 95;  
             bt2.Click += Button_Click;
             bt2.Foreground = new SolidColorBrush(Colors.Black);
@@ -217,7 +239,7 @@ namespace CampusAppEvalWP
             grid3.Margin = new Thickness(0, 0, 0, 0);
 
             bt3 = new Button();
-            bt3.Width = 165;
+            bt3.Width = buttonWidth; // 165;
             bt3.Height = 95;
             bt3.Click += Button_Click;
             bt3.Foreground = new SolidColorBrush(Colors.Black);
@@ -243,7 +265,7 @@ namespace CampusAppEvalWP
             grid3.Children.Add(bt3);
 
             bt4 = new Button();
-            bt4.Width = 175;
+            bt4.Width = buttonWidth + 5; // 175;
             bt4.Height = 95;
             bt4.Click += Button_Click;
             bt4.Foreground = new SolidColorBrush(Colors.Black);
@@ -285,7 +307,7 @@ namespace CampusAppEvalWP
             grid4.Margin = new Thickness(0, 0, 0, 0);
 
             bt5 = new Button();
-            bt5.Width = 165;
+            bt5.Width = buttonWidth; // 165;
             bt5.Height = 95;
             bt5.Click += Button_Click;
             bt5.Foreground = new SolidColorBrush(Colors.Black);
@@ -310,7 +332,7 @@ namespace CampusAppEvalWP
             grid4.Children.Add(bt5);
 
             bt6 = new Button();
-            bt6.Width = 175;
+            bt6.Width = buttonWidth + 5; // 175;
             bt6.Height = 95;
             bt6.Click += Button_Click;
             bt6.Foreground = new SolidColorBrush(Colors.Black);
@@ -360,6 +382,7 @@ namespace CampusAppEvalWP
             _textBox.BorderBrush = new SolidColorBrush(Colors.Black);
             //_textBox.PreventKeyboardDisplayOnProgrammaticFocus = true;
             //_textBox.GotFocus += _textBox_GotFocus;
+            _textBox.PlaceholderText = "Geben Sie hier Ihre Antwort ein";
 
             binding = new Binding() { Path = new PropertyPath("BigAnswer") };
             _textBox.SetBinding(TextBox.TextProperty, binding);
@@ -407,19 +430,21 @@ namespace CampusAppEvalWP
             }
             else
             {
+                
                 bt1.IsEnabled = true;
                 bt2.IsEnabled = true;
                 bt3.IsEnabled = true;
                 bt4.IsEnabled = true;
                 bt5.IsEnabled = true;
-                bt6.IsEnabled = true;  
+                bt6.IsEnabled = true; 
+                
                 
                 // button1
                 tbButton1.DataContext = dsl[this.counterPage - 1];
                 bt1.DataContext = dsl[this.counterPage - 1];
                 if (dsl[this.counterPage - 1].Answer1.Equals(""))
                 {
-                    bt1.IsEnabled = false;     
+                    bt1.IsEnabled = false;                  
                 }
 
                 // button2
@@ -427,7 +452,7 @@ namespace CampusAppEvalWP
                 bt2.DataContext = dsl[this.counterPage - 1];
                 if (dsl[this.counterPage - 1].Answer2.Equals(""))
                 {
-                    bt2.IsEnabled = false;  
+                    bt2.IsEnabled = false; 
                 }
 
                 // butoon3
@@ -522,33 +547,6 @@ namespace CampusAppEvalWP
                                 
         }
 
-        /*
-        private async Task<DTO.QuestionsDTO> GetSampleDataAsync()
-        {
-
-            Uri dataUri = new Uri("ms-appx:///DataModel/Questions.json");           
-
-            StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(dataUri);
-            
-            using (var fileStream = await file.OpenStreamForReadAsync())
-            {
-                var memoryStream = new MemoryStream();
-                await fileStream.CopyToAsync(memoryStream);
-
-                memoryStream.Seek(0, SeekOrigin.Begin);
-                
-
-                DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(DTO.QuestionsDTO));
-       
-                DTO.QuestionsDTO dmq = (DTO.QuestionsDTO)ser.ReadObject(memoryStream);
-
-                return dmq;
-            }
-
-
-        }
-       
-         * */
         /// <summary>
         /// Wird aufgerufen, wenn diese Seite in einem Frame angezeigt werden soll.
         /// </summary>
@@ -556,11 +554,11 @@ namespace CampusAppEvalWP
         /// Dieser Parameter wird normalerweise zum Konfigurieren der Seite verwendet.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-
+            
             Helper.Functions.sendDataTOEvaluation help = (Helper.Functions.sendDataTOEvaluation)e.Parameter;
             dsl = help.dsl;
             qrDTO = help.qrDTO;
-
+                    
             maxItems = dsl.Count;
 
             createPages();
@@ -568,7 +566,7 @@ namespace CampusAppEvalWP
             createTemplate();
 
             setPage();
-                    
+
         }
 
        
@@ -800,18 +798,7 @@ namespace CampusAppEvalWP
            
            
         }
-
-        /*
-        private void tb_Loaded(object sender, RoutedEventArgs e)
-        {
-            
-            // Focus für die Textbox setzen, damit die Tastatur gleich geöffnet wird
-            
-            _textBox.Focus(FocusState.Programmatic);
-
-        }
-         * */
-       
+      
 
         private void AppBarButton_GotFocus(object sender, RoutedEventArgs e)
         {
@@ -881,14 +868,6 @@ namespace CampusAppEvalWP
             }
         }
 
-        /*
-        private void PivotItem_Loaded(object sender, RoutedEventArgs e)
-        {
-            // damit die Tastatur sofort geöffnet wird
-            //_textBox.Focus(FocusState.Programmatic); 
-        }
-         * */
-
         private void abbAccept_Click(object sender, RoutedEventArgs e)
         {
             // haben wir schon alle Frage beantwortet?
@@ -919,7 +898,11 @@ namespace CampusAppEvalWP
             else if (type == 1)
             {
                 msg.Commands.Add(new UICommand("OK", new UICommandInvokedHandler(CommandHandlers)));
-            }           
+            }
+            else if (type == 1)
+            {
+                msg.Commands.Add(new UICommand("Beenden", new UICommandInvokedHandler(CommandHandlers)));
+            }
 
             await msg.ShowAsync();
         }
@@ -939,8 +922,10 @@ namespace CampusAppEvalWP
                     
                     break;
                 //end.
-                case "OK":
+                case "Beenden":
                     Application.Current.Exit();
+                    break;
+                case "OK":      
                     break;
             }
         }  
@@ -954,16 +939,16 @@ namespace CampusAppEvalWP
                 DTO.AnswersDTO aDTO = Helper.Functions.convertDataSourcetoAnswersDTO(dsl);
                 string requestDTOJSON = JsonConvert.SerializeObject(aDTO);
 
-                string jsonString = await Helper.Functions.sendDataToServer(qrDTO.host, "/v1/answers", requestDTOJSON, true);
+                string jsonString = await Helper.Functions.sendDataToServer(qrDTO.host, "/v1/answers", requestDTOJSON);
 
-                // TODO
-                // Wenn keine Internetverbindung steht?
-
-                mDialog("Daten wurden an den Server geschickt. Danke für Ihre Teilnahme.", 1);
+                if (jsonString.Equals(""))
+                    mDialog("Fehler: Daten konnten nicht zum Server gesendet werden!", 1);
+                else
+                    mDialog("Daten wurden an den Server geschickt. Danke für Ihre Teilnahme.", 2);
             }
             else
             {
-                mDialog("Keine Internetverbindung verfügbar!", 1);
+                mDialog("Fehler: Keine Internetverbindung verfügbar!", 1);
             }
         }
         

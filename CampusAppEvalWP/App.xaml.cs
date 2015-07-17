@@ -102,6 +102,8 @@ namespace CampusAppEvalWP
                 // Wenn der Navigationsstapel nicht wiederhergestellt wird, zur ersten Seite navigieren
                 // und die neue Seite konfigurieren, indem die erforderlichen Informationen als Navigationsparameter
                 // übergeben werden
+
+                //TEST QR_Code
                 if (!rootFrame.Navigate(typeof(QR_Code), e.Arguments))
                 {
                     throw new Exception("Failed to create initial page");

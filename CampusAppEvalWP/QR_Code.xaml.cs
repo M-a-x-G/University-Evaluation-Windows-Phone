@@ -212,15 +212,13 @@ namespace CampusAppEvalWP
                             getQuestions(qrcDTO);
                         }
                         else
-                            mDialog("Keine gültige URL gefunden!", 1);                   
+                            mDialog("Fehler: Keine gültige URL gefunden!", 1);                   
                     }
          
 
                 });
             }
         }
-
-// TODO ###########################################################################################################
 
         private async void getQuestions(DTO.QRCodeDTO aQRCDTO)
         {
@@ -229,18 +227,20 @@ namespace CampusAppEvalWP
             {
 
                 // step 1
-                // Request DTO gibt es das noch??????
+                // Request DTO
+                DTO.RequestDTO rDTO = new DTO.RequestDTO();
+                rDTO.voteToken = aQRCDTO.uid;                
 
                 // questions
-                string jsonString = await Helper.Functions.sendDataToServer(aQRCDTO.host, "/v1/questions", "", false);
+                string jsonString = await Helper.Functions.sendDataToServer(aQRCDTO.host, "/v1/questions", JsonConvert.SerializeObject(rDTO));
 
                 if (jsonString.Equals(""))
-                    mDialog("Keine Daten vom Server erhalten!", 1);
+                    mDialog("Fehler: Keine Daten vom Server erhalten!", 1);
                 else
                 {
                     DTO.QuestionsDTO qDTO = JsonConvert.DeserializeObject<DTO.QuestionsDTO>(jsonString);
                     if (qDTO == null)
-                        mDialog("Falsche Daten eingelesen!", 1);
+                        mDialog("Fehler: Falsche Daten eingelesen!", 1);
                     // step 3
                     // navigate to the next page
                     else
@@ -255,7 +255,7 @@ namespace CampusAppEvalWP
             }
             else
             {
-                mDialog("Keine Internetverbindung verfügbar!", 1); 
+                mDialog("Fehler: Keine Internetverbindung verfügbar!", 1); 
             }
 
         }

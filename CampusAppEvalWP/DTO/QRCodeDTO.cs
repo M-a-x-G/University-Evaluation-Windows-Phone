@@ -14,6 +14,6 @@ namespace CampusAppEvalWP.DTO
         internal string host;
 
         [DataMember]
-        internal string uid;
+        internal string voteToken;
     }
 }

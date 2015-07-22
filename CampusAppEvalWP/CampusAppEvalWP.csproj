@@ -91,6 +91,7 @@
     </Compile>
     <Compile Include="DataModel\BindableBase.cs" />
     <Compile Include="DataModel\DataSource.cs" />
+    <Compile Include="DataModel\ErrorTyps.cs" />
     <Compile Include="DTO\AnswersDTO .cs" />
     <Compile Include="DTO\QRCodeDTO.cs" />
     <Compile Include="DTO\QuestionsDTO.cs" />

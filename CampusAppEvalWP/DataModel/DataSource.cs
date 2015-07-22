@@ -33,19 +33,20 @@ namespace CampusAppEvalWP.DataModel
         private Brush _answer3Color;
         private Brush _answer4Color;
         private Brush _answer5Color;
-        private Brush _answer6Color;
-       
-        private String _course;
+        private Brush _answer6Color;     
 
-        public DataSource(String aQuestion, String aCourse)
-            : this(aQuestion, "", "", "", "", "", "", aCourse)
+        private Color activColor;
+        private Color normalColor;
+
+        public DataSource(String aQuestion)
+            : this(aQuestion, "", "", "", "", "", "")
         {
             this._bigAnswer = "";
             this._isBigAnswer = true;
 
         }
 
-        public DataSource(String aQuestion, String aAnswer1, String aAnswer2, String aAnswer3, String aAnswer4, String aAnswer5, String aAnswer6, String aCourse)
+        public DataSource(String aQuestion, String aAnswer1, String aAnswer2, String aAnswer3, String aAnswer4, String aAnswer5, String aAnswer6)
         {          
             this._question = aQuestion;
             this._answer1 = aAnswer1;
@@ -56,25 +57,22 @@ namespace CampusAppEvalWP.DataModel
             this._answer6 = aAnswer6;
             this._isBigAnswer = false;
 
-            Answer1Color = new SolidColorBrush(Colors.Gray);
-            Answer2Color = new SolidColorBrush(Colors.Gray);
-            Answer3Color = new SolidColorBrush(Colors.Gray);
-            Answer4Color = new SolidColorBrush(Colors.Gray);
-            Answer5Color = new SolidColorBrush(Colors.Gray);
-            Answer6Color = new SolidColorBrush(Colors.Gray);
-        
-            this._course = aCourse;
+            activColor = Color.FromArgb(255, 127, 0, 25);
+            normalColor = Color.FromArgb(255, 204, 10, 47);
+
+            //activColor = Color.FromArgb(255, 185, 35, 32);
+            //normalColor = Color.FromArgb(255, 215, 85, 72);
+
+            Answer1Color = new SolidColorBrush(normalColor);
+            Answer2Color = new SolidColorBrush(normalColor);
+            Answer3Color = new SolidColorBrush(normalColor);
+            Answer4Color = new SolidColorBrush(normalColor);
+            Answer5Color = new SolidColorBrush(normalColor);
+            Answer6Color = new SolidColorBrush(normalColor);
            
 
         }
        
-
-        public string Course
-        {
-            get { return this._course; }
-            set { this._course = value; }         
-        }
-
         public string Question
         {
             get { return this._question; }
@@ -300,57 +298,57 @@ namespace CampusAppEvalWP.DataModel
             {
                 case 1:
                     Answer1State = true;
-                    Answer1Color = new SolidColorBrush(Color.FromArgb(255, 204, 10, 47));
-                    Answer2Color = new SolidColorBrush(Colors.Gray);
-                    Answer3Color = new SolidColorBrush(Colors.Gray);
-                    Answer4Color = new SolidColorBrush(Colors.Gray);
-                    Answer5Color = new SolidColorBrush(Colors.Gray);
-                    Answer6Color = new SolidColorBrush(Colors.Gray);
+                    Answer1Color = new SolidColorBrush(activColor);
+                    Answer2Color = new SolidColorBrush(normalColor);
+                    Answer3Color = new SolidColorBrush(normalColor);
+                    Answer4Color = new SolidColorBrush(normalColor);
+                    Answer5Color = new SolidColorBrush(normalColor);
+                    Answer6Color = new SolidColorBrush(normalColor);
                     break;
                 case 2:
                     Answer2State = true;
-                    Answer1Color = new SolidColorBrush(Colors.Gray);
-                    Answer2Color = new SolidColorBrush(Color.FromArgb(255, 204, 10, 47));
-                    Answer3Color = new SolidColorBrush(Colors.Gray);
-                    Answer4Color = new SolidColorBrush(Colors.Gray);
-                    Answer5Color = new SolidColorBrush(Colors.Gray);
-                    Answer6Color = new SolidColorBrush(Colors.Gray);
+                    Answer1Color = new SolidColorBrush(normalColor);
+                    Answer2Color = new SolidColorBrush(activColor);
+                    Answer3Color = new SolidColorBrush(normalColor);
+                    Answer4Color = new SolidColorBrush(normalColor);
+                    Answer5Color = new SolidColorBrush(normalColor);
+                    Answer6Color = new SolidColorBrush(normalColor);
                     break;
                 case 3:
                     Answer3State = true;
-                    Answer1Color = new SolidColorBrush(Colors.Gray);
-                    Answer2Color = new SolidColorBrush(Colors.Gray);
-                    Answer3Color = new SolidColorBrush(Color.FromArgb(255, 204, 10, 47));
-                    Answer4Color = new SolidColorBrush(Colors.Gray);
-                    Answer5Color = new SolidColorBrush(Colors.Gray);
-                    Answer6Color = new SolidColorBrush(Colors.Gray);
+                    Answer1Color = new SolidColorBrush(normalColor);
+                    Answer2Color = new SolidColorBrush(normalColor);
+                    Answer3Color = new SolidColorBrush(activColor);
+                    Answer4Color = new SolidColorBrush(normalColor);
+                    Answer5Color = new SolidColorBrush(normalColor);
+                    Answer6Color = new SolidColorBrush(normalColor);
                     break;
                 case 4:
                     Answer4State = true;
-                    Answer1Color = new SolidColorBrush(Colors.Gray);
-                    Answer2Color = new SolidColorBrush(Colors.Gray);
-                    Answer3Color = new SolidColorBrush(Colors.Gray);
-                    Answer4Color = new SolidColorBrush(Color.FromArgb(255, 204, 10, 47));
-                    Answer5Color = new SolidColorBrush(Colors.Gray);
-                    Answer6Color = new SolidColorBrush(Colors.Gray);
+                    Answer1Color = new SolidColorBrush(normalColor);
+                    Answer2Color = new SolidColorBrush(normalColor);
+                    Answer3Color = new SolidColorBrush(normalColor);
+                    Answer4Color = new SolidColorBrush(activColor);
+                    Answer5Color = new SolidColorBrush(normalColor);
+                    Answer6Color = new SolidColorBrush(normalColor);
                     break;
                 case 5:
                     Answer5State = true;
-                    Answer1Color = new SolidColorBrush(Colors.Gray);
-                    Answer2Color = new SolidColorBrush(Colors.Gray);
-                    Answer3Color = new SolidColorBrush(Colors.Gray);
-                    Answer4Color = new SolidColorBrush(Colors.Gray);
-                    Answer5Color = new SolidColorBrush(Color.FromArgb(255, 204, 10, 47));
-                    Answer6Color = new SolidColorBrush(Colors.Gray);
+                    Answer1Color = new SolidColorBrush(normalColor);
+                    Answer2Color = new SolidColorBrush(normalColor);
+                    Answer3Color = new SolidColorBrush(normalColor);
+                    Answer4Color = new SolidColorBrush(normalColor);
+                    Answer5Color = new SolidColorBrush(activColor);
+                    Answer6Color = new SolidColorBrush(normalColor);
                     break;
                 case 6:
                     Answer6State = true;
-                    Answer1Color = new SolidColorBrush(Colors.Gray);
-                    Answer2Color = new SolidColorBrush(Colors.Gray);
-                    Answer3Color = new SolidColorBrush(Colors.Gray);
-                    Answer4Color = new SolidColorBrush(Colors.Gray);
-                    Answer5Color = new SolidColorBrush(Colors.Gray);
-                    Answer6Color = new SolidColorBrush(Color.FromArgb(255, 204, 10, 47));
+                    Answer1Color = new SolidColorBrush(normalColor);
+                    Answer2Color = new SolidColorBrush(normalColor);
+                    Answer3Color = new SolidColorBrush(normalColor);
+                    Answer4Color = new SolidColorBrush(normalColor);
+                    Answer5Color = new SolidColorBrush(normalColor);
+                    Answer6Color = new SolidColorBrush(activColor);
                     break;
 
             }

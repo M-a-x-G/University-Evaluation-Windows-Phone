@@ -16,6 +16,7 @@ using Windows.Foundation.Collections;
 using Windows.Media.Capture;
 using Windows.Media.Devices;
 using Windows.Media.MediaProperties;
+using Windows.Phone.UI.Input;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI.Core;
@@ -47,6 +48,9 @@ namespace CampusAppEvalWP
         FocusControl focusControl;
         DispatcherTimer dispatcherTimer;
 
+        private bool closeApp;
+        private bool OpenWindow;
+
         public QR_Code()
         {
             this.InitializeComponent();
@@ -59,6 +63,11 @@ namespace CampusAppEvalWP
 
             Application.Current.Suspending += new SuspendingEventHandler(App_Suspending);
             Application.Current.Resuming += new EventHandler<Object>(App_Resuming);
+
+            disableSearchFrame();
+
+            this.closeApp = false;
+            this.OpenWindow = false;
                               
         }
 
@@ -183,7 +192,7 @@ namespace CampusAppEvalWP
                     );
             }
             catch
-            {
+            {           
                 mDialog("Fehler beim Einlesen des QR-Codes", 1);
             }
 
@@ -195,16 +204,26 @@ namespace CampusAppEvalWP
                     removeEffects();
 
                     // show frame, progress ring and text
-                    this.waitFrame.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                    this.waitText.Visibility = Windows.UI.Xaml.Visibility.Visible;
-                    this.waitRing.IsActive = true;
+                    enableSearchFrame();
 
                     // QR-Code hat nun einen json string
                     // host + andere (uid)
-                    DTO.QRCodeDTO qrcDTO = JsonConvert.DeserializeObject<DTO.QRCodeDTO>(result.Text);
+                    DTO.QRCodeDTO qrcDTO;
+                    try
+                    {
+                        qrcDTO = JsonConvert.DeserializeObject<DTO.QRCodeDTO>(result.Text);
+                    }
+                    catch (Exception e)
+                    {
+                        qrcDTO = null;
+                    }
+
                     if (qrcDTO == null)
+                    {
+                        disableSearchFrame();
                         mDialog("Falscher QR-Code!" + Environment.NewLine + "Weiter scannen?", 0);
-                    else 
+                    }
+                    else
                     {
                         // check http url                  
                         if (Uri.IsWellFormedUriString(qrcDTO.host, UriKind.RelativeOrAbsolute))
@@ -212,12 +231,29 @@ namespace CampusAppEvalWP
                             getQuestions(qrcDTO);
                         }
                         else
-                            mDialog("Fehler: Keine gültige URL gefunden!", 1);                   
+                        {
+                            disableSearchFrame();
+                            mDialog("Fehler: Keine gültige URL gefunden!", 1);
+                        }
                     }
          
 
                 });
             }
+        }
+
+        public void disableSearchFrame()
+        {
+            this.waitFrame.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            this.waitText.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            this.waitRing.IsActive = false;
+        }
+
+        public void enableSearchFrame()
+        {
+            this.waitFrame.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            this.waitText.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            this.waitRing.IsActive = true;
         }
 
         private async void getQuestions(DTO.QRCodeDTO aQRCDTO)
@@ -229,18 +265,65 @@ namespace CampusAppEvalWP
                 // step 1
                 // Request DTO
                 DTO.RequestDTO rDTO = new DTO.RequestDTO();
-                rDTO.voteToken = aQRCDTO.uid;                
+                rDTO.voteToken = aQRCDTO.voteToken;                
 
                 // questions
-                string jsonString = await Helper.Functions.sendDataToServer(aQRCDTO.host, "/v1/questions", JsonConvert.SerializeObject(rDTO));
+                Helper.Functions.getDataFromServerStruct gDFS = await Helper.Functions.sendDataToServer(aQRCDTO.host, "/v1/questions", JsonConvert.SerializeObject(rDTO));
 
-                if (jsonString.Equals(""))
-                    mDialog("Fehler: Keine Daten vom Server erhalten!", 1);
+                if (gDFS.OK == false)
+                {
+                    var ignore = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>{ 
+                        
+                        disableSearchFrame();
+
+                        DTO.ResponseDTO reDTO;
+                        try
+                        {
+                            reDTO = JsonConvert.DeserializeObject<DTO.ResponseDTO>(gDFS.json);
+                        }
+                        catch (Exception e)
+                        {
+                            reDTO = null;
+                        }
+
+                        if (reDTO == null)
+                        {
+                            mDialog("Fehler: Keine Daten vom Server erhalten!", 1);
+                        }
+                        else
+                        {
+                            mDialog(Helper.Functions.serverMessage(reDTO), 1);
+                        }
+
+                        
+                    
+                    });
+                    
+                    
+                }
                 else
                 {
-                    DTO.QuestionsDTO qDTO = JsonConvert.DeserializeObject<DTO.QuestionsDTO>(jsonString);
+                    DTO.QuestionsDTO qDTO;
+                    try
+                    {
+                        qDTO = JsonConvert.DeserializeObject<DTO.QuestionsDTO>(gDFS.json);
+                    }
+                    catch (Exception e)
+                    {
+                        qDTO = null;
+                    }
+                        
                     if (qDTO == null)
-                        mDialog("Fehler: Falsche Daten eingelesen!", 1);
+                    {
+                        var ignore = Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => { 
+                            
+                            disableSearchFrame();
+                            
+                            mDialog("Fehler: Falsche Daten eingelesen!", 1);
+                        
+                        });
+                        
+                    }
                     // step 3
                     // navigate to the next page
                     else
@@ -255,6 +338,7 @@ namespace CampusAppEvalWP
             }
             else
             {
+                disableSearchFrame();
                 mDialog("Fehler: Keine Internetverbindung verfügbar!", 1); 
             }
 
@@ -327,52 +411,94 @@ namespace CampusAppEvalWP
 
             createCamera();
             DispatcherTimerSetup();
+            HardwareButtons.BackPressed += HardwareButtons_BackPressed;
+
                  
         }
+
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            //HardwareButtons.BackPressed -= HardwareButtons_BackPressed;
+        }
+
+        private void HardwareButtons_BackPressed(object sender, Windows.Phone.UI.Input.BackPressedEventArgs e)
+        {
+            DispatcherTimerOff();
+            //removeEffects();
+            disposeCamera();
+
+            Application.Current.Exit();
+            //closeApp = true;
+            e.Handled = true;
+            //mDialog("Wollen Sie die Evaluation beenden?", 0);
+           
+        }
+
 
 
 
 
         public async void mDialog(string text, int type)
-        {          
-
-            MessageDialog msg = new MessageDialog(text);
-
-            if (type == 0)
+        {
+            if (!OpenWindow)
             {
-                msg.Commands.Add(new UICommand("Ja", new UICommandInvokedHandler(CommandHandlers)));
-                msg.Commands.Add(new UICommand("Nein", new UICommandInvokedHandler(CommandHandlers)));
-            }
-            else
-            {
-                msg.Commands.Add(new UICommand("OK", new UICommandInvokedHandler(CommandHandlers)));
-            }
+                MessageDialog msg = new MessageDialog(text);
 
-            await msg.ShowAsync();
+                if (type == 0)
+                {
+                    msg.Commands.Add(new UICommand("Ja", new UICommandInvokedHandler(CommandHandlers)));
+                    msg.Commands.Add(new UICommand("Nein", new UICommandInvokedHandler(CommandHandlers)));
+                }
+                else
+                {
+                    msg.Commands.Add(new UICommand("OK", new UICommandInvokedHandler(CommandHandlers)));
+                }
+
+                OpenWindow = true;
+
+                await msg.ShowAsync();
+            }
         }
 
         public void CommandHandlers(IUICommand commandLabel)
         {
+            OpenWindow = false;
             var Actions = commandLabel.Label;
             switch (Actions)
             {
                 //Ja, OK Button.
                 case "Ja": case "OK":
+                    if (closeApp)
+                    {
+                        disposeCamera();
+                        Application.Current.Exit();
+                    }
+
+
                     DispatcherTimerOn();
                     setEffects();
 
-                    // show frame, progress ring and text
-                    this.waitFrame.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-                    this.waitText.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
-                    this.waitRing.IsActive = false;
+                    disableSearchFrame();               
 
                     break;               
                 //Nein Button.
                 case "Nein":
-                    disposeCamera();
-                    DispatcherTimerOff();
-                    // test
-                    Application.Current.Exit();
+                    if (closeApp)
+                    {
+                        closeApp = false;
+                        DispatcherTimerOn();
+                        setEffects();
+
+                        disableSearchFrame();
+                    }
+                    else
+                    {
+                        DispatcherTimerOff();
+                        disposeCamera();
+                        
+                        // test
+                        Application.Current.Exit();
+                    }
                     break;
                 //end.
             }
@@ -382,7 +508,7 @@ namespace CampusAppEvalWP
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-
+            //HardwareButtons.BackPressed -= HardwareButtons_BackPressed;
             disposeCamera();
             DispatcherTimerOff();
         }

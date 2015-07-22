@@ -5,7 +5,9 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Phone.UI.Input;
 using Windows.UI;
+using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -27,7 +29,10 @@ namespace CampusAppEvalWP
         private DTO.QuestionsDTO qDTO;
         private DTO.QRCodeDTO qrDTO;
         private List<DataModel.DataSource> dsl;
-        private string url;
+        private bool closeApp;
+
+        private bool OpenWindow;
+ 
         public Course()
         {
             this.InitializeComponent();
@@ -37,14 +42,16 @@ namespace CampusAppEvalWP
 
             qDTO = new DTO.QuestionsDTO();
             qrDTO = new DTO.QRCodeDTO();
-            url = "";
+
+            closeApp = false;
+            OpenWindow = false;
             
         }
 
         private void createButtons()
         {
 
-            for (int i = 0; i < qDTO.innerSections.Length; i++)
+            for (int i = 0; i < qDTO.studyPaths.Length; i++)
             {
                 Button btn = new Button();
                 btn.Height = 80;
@@ -56,7 +63,7 @@ namespace CampusAppEvalWP
 
                 TextBlock tbText = new TextBlock();
                 tbText.FontSize = 20;
-                tbText.Text = qDTO.innerSections[i];
+                tbText.Text = qDTO.studyPaths[i];
 
                 btn.Content = tbText;
 
@@ -72,11 +79,12 @@ namespace CampusAppEvalWP
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Button btn = (Button)sender;
-            dsl = Helper.Functions.convertQuestionDTOToDataSource(qDTO, qDTO.innerSections[(int)btn.Tag]);
+            dsl = Helper.Functions.convertQuestionDTOToDataSource(qDTO);
 
             Helper.Functions.sendDataTOEvaluation help = new Helper.Functions.sendDataTOEvaluation();
             help.dsl = dsl;
             help.qrDTO = qrDTO;
+            help.course = qDTO.studyPaths[(int)btn.Tag];
 
             Frame.Navigate(typeof(Evaluation), help);
         }
@@ -88,16 +96,68 @@ namespace CampusAppEvalWP
         /// Dieser Parameter wird normalerweise zum Konfigurieren der Seite verwendet.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            //HardwareButtons.BackPressed += HardwareButtons_BackPressed;
+            
+            
             Helper.Functions.sendDataTOCourse help = (Helper.Functions.sendDataTOCourse)e.Parameter;
             qDTO = help.qDTO;
             qrDTO = help.qrDTO;
+            
 
             // Test
-            //string[] test = { "Informatik", "Medieninformatik" };
-            //qDTO.innerSections = test;
+            //string[] test = { "Informatik", "Medieninformatik", "TTTTEEEESSSTTTT" };
+            //qDTO.studyPaths = test;
 
 
             createButtons();
+        }
+
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            //HardwareButtons.BackPressed -= HardwareButtons_BackPressed;
+        }
+
+        private void HardwareButtons_BackPressed(object sender, Windows.Phone.UI.Input.BackPressedEventArgs e)
+        {
+            //closeApp = true;
+            //e.Handled = true;
+
+            // test
+            //mDialog("Wollen Sie die Evaluation beenden?");
+        }
+
+        public async void mDialog(string text)
+        {
+            // OpenWindow siehe qr_code page
+
+
+            MessageDialog msg = new MessageDialog(text);
+
+            
+            
+            msg.Commands.Add(new UICommand("Ja", new UICommandInvokedHandler(CommandHandlers)));
+            msg.Commands.Add(new UICommand("Nein", new UICommandInvokedHandler(CommandHandlers)));
+            
+            
+
+            await msg.ShowAsync();
+        }
+
+        public void CommandHandlers(IUICommand commandLabel)
+        {
+            var Actions = commandLabel.Label;
+            switch (Actions)
+            {
+                //Ja, OK Button.
+                case "Ja":              
+                    if (closeApp)
+                        Application.Current.Exit();
+                    break;
+                //Nein Button.
+                case "Nein":
+                    closeApp = false;
+                    break;
+            }
         }
     }
 }

@@ -12,5 +12,8 @@ namespace CampusAppEvalWP.DTO
     {
          [DataMember]
          internal string message;
+
+         [DataMember]
+         internal int type;
     }
 }

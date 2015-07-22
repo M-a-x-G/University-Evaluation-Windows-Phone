@@ -17,7 +17,7 @@ namespace CampusAppEvalWP.DTO
     class QuestionsDTO
     {
         [DataMember]
-        internal string[] innerSections;
+        internal string[] studyPaths;
 
         [DataMember]
         internal string[] textQuestions;

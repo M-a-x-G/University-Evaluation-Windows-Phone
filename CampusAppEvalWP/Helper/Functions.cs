@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CampusAppEvalWP.DataModel;
+using CampusAppEvalWP.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,6 +27,13 @@ namespace CampusAppEvalWP.Helper
         {
             public List<DataModel.DataSource> dsl;
             public DTO.QRCodeDTO qrDTO;
+            public string course;
+        }
+
+        public struct getDataFromServerStruct
+        {
+            public bool OK;
+            public string json;
         }
         
         /*public static string GetDeviceID()
@@ -39,11 +48,12 @@ namespace CampusAppEvalWP.Helper
             return hashedString;
         }*/
 
-        public static async Task<string> getDataFromServer(string aUrl)
+        /*public static async Task<getDataFromServerStruct> getDataFromServer(string aUrl)
         {
             var uri = new Uri(aUrl);
             var httpClient = new HttpClient();
-            string result = "";
+
+            getDataFromServerStruct result = new getDataFromServerStruct();
 
 
             // Always catch network exceptions for async methods
@@ -53,10 +63,16 @@ namespace CampusAppEvalWP.Helper
 
                 var statusCode = response.StatusCode;
 
+                result.json = await response.Content.ReadAsStringAsync();
+
                 if ((statusCode == HttpStatusCode.Ok) || (statusCode == HttpStatusCode.Accepted))
-                    result = await response.Content.ReadAsStringAsync();
-
-
+                {
+                    result.OK = true;
+                }
+                else
+                {
+                    result.OK = false;
+                }
             }
             catch
             {
@@ -68,11 +84,12 @@ namespace CampusAppEvalWP.Helper
             httpClient.Dispose();
 
             return result;
-        }
+        }*/
 
-        public static async Task<string> sendDataToServer(string aUrl, string aEndPoint, string aJson)
+        public static async Task<getDataFromServerStruct> sendDataToServer(string aUrl, string aEndPoint, string aJson)
         {
-            string result = "";
+            getDataFromServerStruct result = new getDataFromServerStruct();
+           
             var httpClient = new HttpClient();
             
             // Always catch network exceptions for async methods
@@ -88,8 +105,16 @@ namespace CampusAppEvalWP.Helper
               
                 var statusCode = response.StatusCode;
 
+                result.json = await response.Content.ReadAsStringAsync();
+
                 if (statusCode == HttpStatusCode.Ok)
-                    result = await response.Content.ReadAsStringAsync();
+                {                 
+                    result.OK = true;                  
+                }
+                else
+                {
+                    result.OK = false;
+                }
 
 
             }
@@ -105,6 +130,30 @@ namespace CampusAppEvalWP.Helper
             return result;
         }
 
+        public static string serverMessage(ResponseDTO rdto)
+        {
+            string message = "";
+
+            if (rdto.type == ErrorTyps.ANSWERS_SUCCESSFUL_ADDED)
+                message = "Server: Daten erfolgreich erhalten";
+            if (rdto.type == ErrorTyps.ERROR_WHILE_CREATING_EVALUATION)
+                message = "Fehler: Server erstellt eine Evaluation";
+            if (rdto.type == ErrorTyps.ERROR_WHILE_FILE_CREATION)
+                message = "Fehler: Server erstellt eine Datei";
+            if (rdto.type == ErrorTyps.EVALUATION_CLOSED)
+                message = "Server: Evaluation wurde schon beendet";
+            if (rdto.type == ErrorTyps.EVALUATION_CLOSED_WITH_FAILURE)
+                message = "Server: Evaluation wurde mit einem Fehler beendet";
+            if (rdto.type == ErrorTyps.IVALID_TOKEN)
+                message = "Server: QR-Code is nicht mehr gültig";
+            if (rdto.type == ErrorTyps.TOKEN_ALLREADY_USED)
+                message = "Server: QR-Code wurde schon verwendet (Token)";
+            if (rdto.type == ErrorTyps.UNKNOWN_ERROR)
+                message = "Server: Unbekannter Fehler";
+
+            return message;
+        }
+
         /// <summary>
         /// Parse a query string into a System.Collections.Generic.Dictionary
         /// </summary>
@@ -115,7 +164,7 @@ namespace CampusAppEvalWP.Helper
             return decoder.ToDictionary(x => x.Name, x => x.Value);
         }*/
 
-        public static List<DataModel.DataSource> convertQuestionDTOToDataSource(DTO.QuestionsDTO aQDTO, String aCourse)
+        public static List<DataModel.DataSource> convertQuestionDTOToDataSource(DTO.QuestionsDTO aQDTO)
         {
             List<DataModel.DataSource> dsl = new List<DataModel.DataSource>();
             
@@ -147,13 +196,13 @@ namespace CampusAppEvalWP.Helper
                 }
 
 
-                DataModel.DataSource ds = new DataModel.DataSource(item.text, lAnswer1, lAnswer2, lAnswer3, lAnswer4, lAnswer5, lAnswer6, aCourse);
+                DataModel.DataSource ds = new DataModel.DataSource(item.text, lAnswer1, lAnswer2, lAnswer3, lAnswer4, lAnswer5, lAnswer6);
                 dsl.Add(ds);
             }
 
             foreach (string value in aQDTO.textQuestions)
             {
-                DataModel.DataSource ds = new DataModel.DataSource(value, aCourse);
+                DataModel.DataSource ds = new DataModel.DataSource(value);
                 dsl.Add(ds);
             }
 

@@ -1,19 +1,24 @@
-# CampusAppEvalWP
+# University Evaluation Windows Phone
 
-#Licenses of used software:
 
-**VideoEffect:**
-  
-  Copyright © 2014-2015 Matthieu Maitre
- 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
- 
-       http://www.apache.org/licenses/LICENSE-2.0
- 
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
+# *!!!! This Project is under construction and not ready to use !!!!* 
+
+
+This project presents a software solution of the evaluation
+problem faced by universities.  The software
+features automated processing of given answers, independency
+of location, a flexible data model supporting multiple questionnaires
+and an interface designed to be used effectively upon first
+encounter. While our approach aims to support a high participation
+rate of the evaluations it is currently tested in a live environment
+to see if it reaches this goal.
+
+## Related projects
+
+* OpenUniversityEvaluation Backend
+* OpenUniversityEvaluation DTOs
+* OpenUniversityEvaluation Android App
+
+## Licenses of used software
+
+Please see the file called [LICENSE](/LICENSE)

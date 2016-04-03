@@ -15,9 +15,9 @@ to see if it reaches this goal.
 
 ## Related projects
 
-* OpenUniversityEvaluation Backend
-* OpenUniversityEvaluation DTOs
-* OpenUniversityEvaluation Android App
+* [University Evaluation Backend](https://github.com/TH-Brandenburg/University-Evaluation-Backend)
+* [University Evaluation DTOs](https://github.com/TH-Brandenburg/University-Evaluation-DTOs)
+* [University Evaluation Android App](https://github.com/TH-Brandenburg/University-Evaluation-Android)
 
 ## Licenses of used software
 
